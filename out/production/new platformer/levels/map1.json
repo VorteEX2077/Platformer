@@ -1,0 +1,50 @@
+[
+  {
+    "x": "0",
+    "y" : "0",
+    "category": "platforms",
+    "location" : "1.png"
+  },
+  {
+    "x": "239",
+    "y": "132",
+    "category": "rocks",
+    "location" : "2.png"
+  },
+  {
+    "x": "300",
+    "y": "260",
+    "category": "platforms",
+    "location" : "3.png"
+  },
+  {
+    "x": "139",
+    "y": "132",
+    "category": "rocks",
+    "location" : "4.png"
+  },
+  {
+    "x": "339",
+    "y": "232",
+    "category": "rocks",
+    "location" : "5.png"
+  },
+  {
+    "x": "200",
+    "y": "500",
+    "category": "platforms",
+    "location" : "6.png"
+  },
+  {
+    "x": "800",
+    "y": "10",
+    "category": "platforms",
+    "location" : "1.png"
+  },
+  {
+    "x": "539",
+    "y": "132",
+    "category": "platforms",
+    "location": "8.png"
+  }
+]
