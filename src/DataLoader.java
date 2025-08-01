@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 
+import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -31,6 +32,10 @@ public class DataLoader {
             }
             images = gson.fromJson(stringBuilder.toString(), Image[].class);
 
+            /* loading the images in the map */
+            for(Image i : images) {
+                i.setImage(ImageIO.read(new File(getClass().getResource(i.imagePath).toURI())));
+            }
         } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }

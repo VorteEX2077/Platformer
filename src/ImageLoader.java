@@ -6,19 +6,17 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class ImageLoader {
-    private HashMap<String, BufferedImage> bigRocks;
-    private HashMap<String, BufferedImage> platforms;
+
 
     public ImageLoader(){
-        bigRocks = loader("/rocks/");
-       platforms = loader("/platforms/");
+
     }
 
     public HashMap<String, BufferedImage> loader(String directory) {
         URL url = getClass().getResource(directory);
         try {
             assert url != null;
-            File file = new File(url.toURI());
+            File file = new File(url.toURI()); // rocks file obj
             File[] listFiles = file.listFiles();
             assert listFiles != null;
 
@@ -29,9 +27,9 @@ public class ImageLoader {
                 a += 1;
             }
 
-            for(String i: imageHashMap.keySet()){
-                System.out.println(i + " --> " + imageHashMap.get(i));
-            }
+//            for(String i: imageHashMap.keySet()){
+//                System.out.println(i + " --> " + imageHashMap.get(i));
+//            }
             return null;
         } catch (Exception e) {
             // Failing...
@@ -39,15 +37,4 @@ public class ImageLoader {
 
         return null;
     }
-
-    public HashMap<String, BufferedImage> getBigRocks() {
-        return bigRocks;
-    }
-     public HashMap<String, BufferedImage> getPlatforms(){
-        return  platforms;
-     }
-
-     public static void main(String[] args){
-        new ImageLoader();
-     }
 }

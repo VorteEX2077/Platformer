@@ -1,50 +1,52 @@
 [
   {
-    "x": "0",
-    "y" : "0",
-    "category": "platforms",
-    "location" : "1.png"
+    "x": 805,
+    "y": 660,
+    "imagePath": "/floor/25.png"
   },
   {
-    "x": "239",
-    "y": "132",
-    "category": "rocks",
-    "location" : "2.png"
+    "x": 1119,
+    "y": 449,
+    "imagePath": "/floor/20.png"
   },
   {
-    "x": "300",
-    "y": "260",
-    "category": "platforms",
-    "location" : "3.png"
+    "x": 1123,
+    "y": 124,
+    "imagePath": "/floor/20.png"
   },
   {
-    "x": "139",
-    "y": "132",
-    "category": "rocks",
-    "location" : "4.png"
+    "x": 125,
+    "y": 669,
+    "imagePath": "/floor/16.png"
   },
   {
-    "x": "339",
-    "y": "232",
-    "category": "rocks",
-    "location" : "5.png"
+    "x": 506,
+    "y": 659,
+    "imagePath": "/floor/25.png"
   },
   {
-    "x": "200",
-    "y": "500",
-    "category": "platforms",
-    "location" : "6.png"
+    "x": 432,
+    "y": 87,
+    "imagePath": "/rocks/6.png"
   },
   {
-    "x": "800",
-    "y": "10",
-    "category": "platforms",
-    "location" : "1.png"
+    "x": 730,
+    "y": 523,
+    "imagePath": "/rocks/2.png"
   },
   {
-    "x": "539",
-    "y": "132",
-    "category": "platforms",
-    "location": "8.png"
+    "x": -24,
+    "y": 419,
+    "imagePath": "/rocks/7.png"
+  },
+  {
+    "x": 704,
+    "y": 352,
+    "imagePath": "/platforms/2.png"
+  },
+  {
+    "x": 372,
+    "y": 454,
+    "imagePath": "/platforms/11.png"
   }
 ]

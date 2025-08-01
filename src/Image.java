@@ -3,8 +3,7 @@ import java.awt.image.BufferedImage;
 public class Image {
     public int x;
     public int y;
-    public String location;
-    public String category;
+    public String imagePath;
     private transient BufferedImage image;
 
     public int getX() {
@@ -14,11 +13,9 @@ public class Image {
     public int getY() {
         return y;
     }
-    public String getLocation(){
-        return location;
-    }
-    public String getCategory(){
-        return category;
+
+    public String getImagePath(){
+        return imagePath;
     }
 
     public BufferedImage getImage() {
