@@ -13,10 +13,12 @@ import java.util.Set;
 public class GamePanel extends JPanel implements KeyListener {
 
     int playerX = 300;
-    int playerY = 700;
+    int playerY = 650;
     int a = 0;
     DataLoader dataLoader;
     boolean isJumping;
+    boolean isFalling;
+    int velocity = -20;
     HashSet<Integer> keyEvent = new HashSet<>();
 
     GamePanel() {
@@ -63,19 +65,24 @@ public class GamePanel extends JPanel implements KeyListener {
     }
 
     private void jump() {
-        if(!isJumping) return;
+        if (!isJumping) return;
 
-        System.out.println("jumping");
 
-        while (isJumping) {
-            if (playerY < 500) isJumping = false;
-
-            if(a % 30 ==0) {
-                playerY -= 1;
-                System.out.println(playerY);
-            }
-            a += 1;
+        System.out.println(playerY);
+        //starts at 700
+        //going up to 500
+        //falling at 498 adds 2
+        /* inside game loop running all the time */
+        if (playerY >= 650){
+            velocity = -20;
+            isJumping = false;
         }
+        playerY += velocity; // going up
+        velocity += 1;
+
+//        if(isFalling && playerY < 650){
+//            playerY += velocity; // going down
+//        }
     }
 
     @Override
