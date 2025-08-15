@@ -2,51 +2,61 @@
   {
     "x": 805,
     "y": 660,
+    "type": "",
     "imagePath": "/floor/25.png"
   },
   {
     "x": 1119,
     "y": 449,
+    "type": "",
     "imagePath": "/floor/20.png"
   },
   {
     "x": 1123,
     "y": 124,
+    "type": "",
     "imagePath": "/floor/20.png"
   },
   {
     "x": 125,
     "y": 669,
+    "type": "",
     "imagePath": "/floor/16.png"
   },
   {
     "x": 506,
     "y": 659,
+    "type": "",
     "imagePath": "/floor/25.png"
   },
   {
     "x": 432,
     "y": 87,
+    "type": "",
     "imagePath": "/rocks/6.png"
   },
   {
     "x": 730,
     "y": 523,
+    "type": "",
     "imagePath": "/rocks/2.png"
   },
   {
     "x": -24,
     "y": 419,
+    "type": "",
     "imagePath": "/rocks/7.png"
   },
   {
     "x": 704,
     "y": 352,
+    "type": "platform",
     "imagePath": "/platforms/2.png"
   },
   {
     "x": 372,
     "y": 454,
+    "type": "platform",
     "imagePath": "/platforms/11.png"
   }
 ]

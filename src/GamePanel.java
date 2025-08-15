@@ -2,22 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.security.Key;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 public class GamePanel extends JPanel implements KeyListener {
 
+    int playerWidth = 50;
+    int playerHeight = 100;
     int playerX = 300;
-    int playerY = 600;
+    int playerY = 400;
+    int maxJumpHeight = 400;
     int a = 0;
     DataLoader dataLoader;
     boolean isJumping;
-    boolean isFalling;
     int velocity = -22;
     HashSet<Integer> keyEvent = new HashSet<>();
 
@@ -35,18 +32,22 @@ public class GamePanel extends JPanel implements KeyListener {
         /* This method is called 100 times every sec  */
 
         for (Image currImage : dataLoader.getImages()) {
-            g.drawImage(currImage.getImage(), currImage.getX(), currImage.getY(), null);
+            BufferedImage image = currImage.getImage();
+            g.setColor(Color.GREEN);
+            g.drawImage(image, currImage.getX(), currImage.getY(), null);
+            g.drawRect(currImage.x, currImage.y, image.getWidth(), image.getHeight());
         }
+
+        collisionCheck();
 
         jump();
 
         //player
         g.setColor(Color.MAGENTA);
-        g.fillRect(playerX, playerY, 50, 100);
+        g.fillRect(playerX, playerY, playerWidth, playerHeight);
 
         if (keyEvent.contains(KeyEvent.VK_D)) {
-            if(isJumping)
-                playerX += 1;
+            if(isJumping) playerX += 2;
             //playerX += 1;
                 /* moving the background */
             for (Image currImage : dataLoader.getImages()) {
@@ -54,6 +55,8 @@ public class GamePanel extends JPanel implements KeyListener {
             }
         }
         if (keyEvent.contains(KeyEvent.VK_A)) {
+            if(isJumping) playerX -= 2;
+
             for (Image currImage : dataLoader.getImages()) {
                 currImage.x += 2;
             }
@@ -70,13 +73,13 @@ public class GamePanel extends JPanel implements KeyListener {
     private void jump() {
         if (!isJumping) return;
 
-
-        System.out.println(playerY);
+       // System.out.println(playerY);
         //starts at 700
         //going up to 500
         //falling at 498 adds 2
         /* inside game loop running all the time */
-        if (playerY >= 600){
+        //System.out.println(maxJumpHeight + "," + playerY);
+        if (playerY >= maxJumpHeight){
             velocity = -22;
             isJumping = false;
         }
@@ -86,6 +89,19 @@ public class GamePanel extends JPanel implements KeyListener {
 //        if(isFalling && playerY < 650){
 //            playerY += velocity; // going down
 //        }
+    }
+
+    private void collisionCheck(){
+        Image[] allImagesArray = dataLoader.getImages();
+
+        for(Image currImages : allImagesArray){
+            if(playerX >= currImages.x && playerX <= currImages.x + currImages.getImage().getWidth()){
+                maxJumpHeight = currImages.y;
+                isJumping = false;
+                System.out.println("collided " + maxJumpHeight);
+                return;
+            }
+        }
     }
 
     @Override
