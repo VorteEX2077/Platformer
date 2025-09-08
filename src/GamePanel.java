@@ -9,10 +9,9 @@ public class GamePanel extends JPanel implements KeyListener {
 
     int playerWidth = 50;
     int playerHeight = 100;
-    int playerX = 300;
+    int playerX = 370;
     int playerY = 400;
-    int maxJumpHeight = 400;
-    int a = 0;
+    int maxJumpHeight = 22 - playerY;
     DataLoader dataLoader;
     boolean isJumping;
     int velocity = -22;
@@ -63,7 +62,6 @@ public class GamePanel extends JPanel implements KeyListener {
         }
         if (keyEvent.contains(KeyEvent.VK_W) || keyEvent.contains(KeyEvent.VK_SPACE)) {
             if (!isJumping) {
-                a = 0;
                 isJumping = true;
             }
             // TODO: move the background
@@ -73,35 +71,31 @@ public class GamePanel extends JPanel implements KeyListener {
     private void jump() {
         if (!isJumping) return;
 
-       // System.out.println(playerY);
-        //starts at 700
-        //going up to 500
-        //falling at 498 adds 2
-        /* inside game loop running all the time */
-        //System.out.println(maxJumpHeight + "," + playerY);
         if (playerY >= maxJumpHeight){
             velocity = -22;
             isJumping = false;
         }
         playerY += velocity; // going up
         velocity += 1;
-
-//        if(isFalling && playerY < 650){
-//            playerY += velocity; // going down
-//        }
     }
 
     private void collisionCheck(){
         Image[] allImagesArray = dataLoader.getImages();
 
         for(Image currImages : allImagesArray){
-            if(playerX >= currImages.x && playerX <= currImages.x + currImages.getImage().getWidth()){
-                maxJumpHeight = currImages.y;
-                isJumping = false;
+            if(playerY + playerHeight >= currImages.y && playerX >= currImages.x && playerX <= currImages.x +
+                    currImages.getImage().getWidth() && currImages.type.equals("platform")){
                 System.out.println("collided " + maxJumpHeight);
+                //TODO stop player = currImages.y - playerHeight prevent from looping
+                playerY = currImages.y - playerHeight;
+                isJumping = false;
                 return;
             }
+            else{
+                if(!isJumping) playerY +=1;
+            }
         }
+
     }
 
     @Override
