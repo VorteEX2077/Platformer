@@ -21,7 +21,7 @@ public class Game implements Runnable {
 
         frame.add(gamePanel);
         frame.setVisible(true);
-        frame.setResizable(false);
+        //frame.setResizable(false);
         frame.setSize(1000, 800);
         start();
     }

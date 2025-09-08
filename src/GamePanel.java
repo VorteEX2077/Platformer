@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class GamePanel extends JPanel implements KeyListener {
@@ -16,6 +17,7 @@ public class GamePanel extends JPanel implements KeyListener {
     boolean isJumping;
     int velocity = -22;
     HashSet<Integer> keyEvent = new HashSet<>();
+    ArrayList<Image> visibleImages = new ArrayList<>();
 
     GamePanel() {
         setFocusable(true);
@@ -30,15 +32,22 @@ public class GamePanel extends JPanel implements KeyListener {
 
         /* This method is called 100 times every sec  */
 
+        visibleImages.clear();
         for (Image currImage : dataLoader.getImages()) {
             BufferedImage image = currImage.getImage();
             g.setColor(Color.GREEN);
             g.drawImage(image, currImage.getX(), currImage.getY(), null);
             g.drawRect(currImage.x, currImage.y, image.getWidth(), image.getHeight());
+
+            if ((currImage.x >= 0 && currImage.x + currImage.getImage().getWidth() >= 0) ||
+                    (currImage.x <= 1000 && currImage.x + currImage.getImage().getWidth() <= 1000))
+                visibleImages.add(currImage);
         }
 
-        collisionCheck();
+        for (Image i : visibleImages) System.out.print(i.getImagePath() + ", ");
+        System.out.println();
 
+        collisionCheck();
         jump();
 
         //player
@@ -83,12 +92,9 @@ public class GamePanel extends JPanel implements KeyListener {
         Image[] allImagesArray = dataLoader.getImages();
 
         for(Image currImages : allImagesArray){
-            if(playerY + playerHeight >= currImages.y && playerX >= currImages.x && playerX <= currImages.x +
-                    currImages.getImage().getWidth() && currImages.type.equals("platform")){
-                System.out.println("collided " + maxJumpHeight);
+            if (isPlayerOnPlatform(currImages)) {
                 //TODO stop player = currImages.y - playerHeight prevent from looping
                 playerY = currImages.y - playerHeight;
-                isJumping = false;
                 return;
             }
             else{
@@ -96,6 +102,11 @@ public class GamePanel extends JPanel implements KeyListener {
             }
         }
 
+    }
+
+    private boolean isPlayerOnPlatform(Image img) {
+        return playerY + playerHeight >= img.y && playerX >= img.x && playerX <= img.x +
+                img.getImage().getWidth() && img.type.equals("platform");
     }
 
     @Override
