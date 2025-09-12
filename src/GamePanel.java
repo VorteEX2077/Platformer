@@ -12,10 +12,11 @@ public class GamePanel extends JPanel implements KeyListener {
     int playerHeight = 100;
     int playerX = 370;
     int playerY = 400;
-    int maxJumpHeight = 22 - playerY;
+    int platformY;
     DataLoader dataLoader;
     boolean isJumping;
     int velocity = -22;
+    boolean onPlatform;
     HashSet<Integer> keyEvent = new HashSet<>();
     ArrayList<Image> visibleImages = new ArrayList<>();
 
@@ -44,8 +45,8 @@ public class GamePanel extends JPanel implements KeyListener {
                 visibleImages.add(currImage);
         }
 
-        for (Image i : visibleImages) System.out.print(i.getImagePath() + ", ");
-        System.out.println();
+//        for (Image i : visibleImages) System.out.print(i.getImagePath() + ", ");
+//        System.out.println();
 
         collisionCheck();
         jump();
@@ -79,8 +80,8 @@ public class GamePanel extends JPanel implements KeyListener {
 
     private void jump() {
         if (!isJumping) return;
-
-        if (playerY >= maxJumpHeight){
+        System.out.println(platformY);
+        if (playerY + playerHeight >= platformY){
             velocity = -22;
             isJumping = false;
         }
@@ -95,10 +96,12 @@ public class GamePanel extends JPanel implements KeyListener {
             if (isPlayerOnPlatform(currImages)) {
                 //TODO stop player = currImages.y - playerHeight prevent from looping
                 playerY = currImages.y - playerHeight;
+                System.out.println("playerY:" + playerY);
+                platformY = currImages.y;
                 return;
             }
             else{
-                if(!isJumping) playerY +=1;
+              //  if(!isJumping) playerY +=1;
             }
         }
 
