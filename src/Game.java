@@ -48,6 +48,7 @@ public class Game implements Runnable {
 
             while (delta >= 1) {
                 gamePanel.repaint();
+                gamePanel.update();
                 delta--;
             }
 

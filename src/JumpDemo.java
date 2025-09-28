@@ -29,8 +29,9 @@ public class JumpDemo extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Apply gravity
-        velocityY += GRAVITY;
-        rectY += velocityY;
+       velocityY += GRAVITY;
+       rectY += velocityY;
+       //System.out.println(rectY + "," + velocityY);
 
         // Apply horizontal movement
         rectX += velocityX;
@@ -41,7 +42,7 @@ public class JumpDemo extends JPanel implements ActionListener, KeyListener {
 
         // Check collision with platform
         Rectangle player = new Rectangle(rectX, rectY, rectW, rectH);
-        if (player.intersects(platform) && velocityY >= 0) {
+        if (player.intersects(platform) ) {
             rectY = platform.y - rectH; // Sit on top
             velocityY = 0;
             onGround = true;
@@ -80,8 +81,10 @@ public class JumpDemo extends JPanel implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_SPACE:
+                System.out.println(onGround + ", " + jumping);
                 if (onGround && !jumping) {
                     velocityY = JUMP_STRENGTH;
+                    System.out.println(velocityY);
                     jumping = true;
                     onGround = false;
                 }

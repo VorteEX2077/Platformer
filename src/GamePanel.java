@@ -15,7 +15,8 @@ public class GamePanel extends JPanel implements KeyListener {
     int platformY;
     DataLoader dataLoader;
     boolean isJumping;
-    int velocity = -22;
+    int velocityY = -22;
+    int GRAVITY = 1;
     boolean onPlatform;
     HashSet<Integer> keyEvent = new HashSet<>();
     ArrayList<Image> visibleImages = new ArrayList<>();
@@ -46,25 +47,22 @@ public class GamePanel extends JPanel implements KeyListener {
         }
 
 //        for (Image i : visibleImages) System.out.print(i.getImagePath() + ", ");
-//        System.out.println();
-
-        collisionCheck();
-        jump();
+//        System.out.println()
 
         //player
         g.setColor(Color.MAGENTA);
         g.fillRect(playerX, playerY, playerWidth, playerHeight);
 
         if (keyEvent.contains(KeyEvent.VK_D)) {
-            if(isJumping) playerX += 2;
+            if (isJumping) playerX += 2;
             //playerX += 1;
-                /* moving the background */
+            /* moving the background */
             for (Image currImage : dataLoader.getImages()) {
                 currImage.x -= 2;
             }
         }
         if (keyEvent.contains(KeyEvent.VK_A)) {
-            if(isJumping) playerX -= 2;
+            if (isJumping) playerX -= 2;
 
             for (Image currImage : dataLoader.getImages()) {
                 currImage.x += 2;
@@ -78,38 +76,35 @@ public class GamePanel extends JPanel implements KeyListener {
         }
     }
 
-    private void jump() {
-        if (!isJumping) return;
-        System.out.println(platformY);
-        if (playerY + playerHeight >= platformY){
-            velocity = -22;
+    public void update() {
+        /* This method is called 100 times every sec  */
+        velocityY += GRAVITY;
+        playerY += velocityY;
+
+        if(!isPlayerOnPlatform() == null){
+            playerY = isPlayerOnPlatform() - rectH; // Sit on top
+            velocityY = 0;
+            onPlatform = true;
             isJumping = false;
+
+        } else if (playerY + playerHeight >= 800) {
         }
-        playerY += velocity; // going up
-        velocity += 1;
+        else {
+
+        }
+
     }
 
-    private void collisionCheck(){
+    private Image isPlayerOnPlatform() {
         Image[] allImagesArray = dataLoader.getImages();
 
-        for(Image currImages : allImagesArray){
-            if (isPlayerOnPlatform(currImages)) {
-                //TODO stop player = currImages.y - playerHeight prevent from looping
-                playerY = currImages.y - playerHeight;
-                System.out.println("playerY:" + playerY);
-                platformY = currImages.y;
-                return;
-            }
-            else{
-              //  if(!isJumping) playerY +=1;
+        for (Image img : allImagesArray) {
+            if(playerY + playerHeight >= img.y && playerX >= img.x && playerX <= img.x +
+                    img.getImage().getWidth() && img.type.equals("platform")) {
+                return img;
             }
         }
-
-    }
-
-    private boolean isPlayerOnPlatform(Image img) {
-        return playerY + playerHeight >= img.y && playerX >= img.x && playerX <= img.x +
-                img.getImage().getWidth() && img.type.equals("platform");
+        return null;
     }
 
     @Override
