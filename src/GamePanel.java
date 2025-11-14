@@ -8,25 +8,25 @@ import java.util.HashSet;
 
 public class GamePanel extends JPanel implements KeyListener {
 
-    private static final int JUMP_STRENGTH = 40;
-    int playerWidth = 50;
-    int playerHeight = 100;
-    int playerX = 370;
-    int playerY = 400;
+    private static final int JUMP_STRENGTH = 25;
+
     DataLoader dataLoader;
     boolean isJumping;
     int velocityY = -22;
     int GRAVITY = 1;
     boolean onPlatform;
     HashSet<Integer> keyEvent = new HashSet<>();
-    ArrayList<Image> visibleImages = new ArrayList<>();
+    ArrayList<Tile> visibleTiles = new ArrayList<>();
+    Player player;
 
+    /* Constructor */
     GamePanel() {
         setFocusable(true);
         addKeyListener(this);
         requestFocus();
         dataLoader = new DataLoader(); // when the new dataloader is ran it calls the constructor and loads
         // all the images
+        player = new Player(475,0, 50, 100);
     }
 
     @Override
@@ -34,39 +34,36 @@ public class GamePanel extends JPanel implements KeyListener {
         super.paint(g);
 
         /* This method is called 100 times every sec  */
+        player.draw(g);
 
-        visibleImages.clear();
-        for (Image currImage : dataLoader.getImages()) {
-            BufferedImage image = currImage.getImage();
+        visibleTiles.clear();
+        for (Tile currTile : dataLoader.getImages()) {
+            BufferedImage image = currTile.getImage();
             g.setColor(Color.GREEN);
-            g.drawImage(image, currImage.getX(), currImage.getY(), null);
-            g.drawRect(currImage.x, currImage.y, image.getWidth(), image.getHeight());
+            g.drawImage(image, currTile.getX(), currTile.getY(), currTile.getWidth(), currTile.getHeight(), null);
+            g.drawRect(currTile.x, currTile.y, currTile.getWidth(), currTile.getHeight());
 
-            if ((currImage.x >= 0 && currImage.x + currImage.getImage().getWidth() >= 0) ||
-                    (currImage.x <= 1000 && currImage.x + currImage.getImage().getWidth() <= 1000))
-                visibleImages.add(currImage);
+            if ((currTile.x >= 0 && currTile.x + currTile.getWidth() >= 0) ||
+                    (currTile.x <= 1000 && currTile.x + currTile.getWidth() <= 1000))
+                visibleTiles.add(currTile);
         }
 
 //        for (Image i : visibleImages) System.out.print(i.getImagePath() + ", ");
 //        System.out.println()
 
-        //player
-        g.setColor(Color.MAGENTA);
-        g.fillRect(playerX, playerY, playerWidth, playerHeight);
-
         if (keyEvent.contains(KeyEvent.VK_D)) {
-            if (isJumping) playerX += 2;
+         //   if (isJumping) player.x += 2;
             //playerX += 1;
             /* moving the background */
-            for (Image currImage : dataLoader.getImages()) {
-                currImage.x -= 2;
+            for (Tile currTile : dataLoader.getImages()) {
+                currTile.x -= 2;
             }
         }
         if (keyEvent.contains(KeyEvent.VK_A)) {
-            if (isJumping) playerX -= 2;
+           // if (isJumping) player.x -= 2;
 
-            for (Image currImage : dataLoader.getImages()) {
-                currImage.x += 2;
+            for (Tile currTile : dataLoader.getImages()) {
+                currTile.x += 2;
             }
         }
         if (keyEvent.contains(KeyEvent.VK_W) || keyEvent.contains(KeyEvent.VK_SPACE)) {
@@ -83,20 +80,21 @@ public class GamePanel extends JPanel implements KeyListener {
         // Apply gravity if in the air
         if (!onPlatform) {
             velocityY += GRAVITY;
-            playerY += velocityY;
+            player.y += velocityY;
         }
 
-        Image imgObj = isPlayerOnPlatform();
+        Tile imgObj = isPlayerOnPlatform();
+        boolean playerCollided = isPlayerCollided();
 
         if (imgObj != null && velocityY >= 0) { // land only when falling or resting
-            playerY = imgObj.y - playerHeight;  // <-- use playerHeight, not image height
+            player.y = imgObj.y - player.height;  // <-- use playerHeight, not image height
             velocityY = 0;
             onPlatform = true;
             isJumping = false;
         }
         // Floor collision
-        else if (playerY + playerHeight >= 800) {
-            playerY = 800 - playerHeight;
+        else if (player.y + player.height >= 800) {
+            player.y = 800 - player.height;
             velocityY = 0;
             onPlatform = true;
             isJumping = false;
@@ -105,20 +103,25 @@ public class GamePanel extends JPanel implements KeyListener {
         }
     }
 
+    private boolean isPlayerCollided() {
 
-    private Image isPlayerOnPlatform() {
-       Image[] allImagesArray = dataLoader.getImages();
+        return false;
+    }
+
+
+    private Tile isPlayerOnPlatform() {
+        Tile[] allImagesArray = dataLoader.getImages();
         // Player's bounding box
-        int playerBottom = playerY + playerHeight;
-        int playerLeft = playerX;
-        int playerRight = playerX + playerWidth;
+        int playerBottom = player.y + player.height;
+        int playerLeft = player.x;
+        int playerRight = player.x + player.width;
 
-        for (Image img : allImagesArray) {
-            if (!"platform".equals(img.type)) continue;
+        for (Tile tile : allImagesArray) {
+            if (!"platform".equals(tile.type)) continue;
 
-            int platLeft = img.x;
-            int platRight = img.x + img.getImage().getWidth();
-            int platTop = img.y;
+            int platLeft = tile.x;
+            int platRight = tile.x + tile.getWidth();
+            int platTop = tile.y;
 
             boolean horizontallyOverlapping = playerRight > platLeft && playerLeft < platRight;
 
@@ -128,7 +131,7 @@ public class GamePanel extends JPanel implements KeyListener {
                     playerBottom >= platTop && playerBottom <= platTop + Math.max(2, Math.abs(velocityY) + 2);
 
             if (horizontallyOverlapping && touchingTop) {
-                return img;
+                return tile;
             }
         }
         return null;

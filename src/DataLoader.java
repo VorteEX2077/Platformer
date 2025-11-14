@@ -7,12 +7,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class DataLoader {
-    private final Image[] images;
+    private final Tile[] tiles;
 
     DataLoader() {
         Gson gson = new Gson();
@@ -30,10 +27,10 @@ public class DataLoader {
                 stringBuilder.append(bufferTemp);
                 bufferTemp = bufferedReader.readLine();
             }
-            images = gson.fromJson(stringBuilder.toString(), Image[].class);
+            tiles = gson.fromJson(stringBuilder.toString(), Tile[].class);
 
             /* loading the images in the map */
-            for(Image i : images) {
+            for(Tile i : tiles) {
                 i.setImage(ImageIO.read(new File(getClass().getResource(i.imagePath).toURI())));
             }
         } catch (IOException | URISyntaxException e) {
@@ -41,8 +38,8 @@ public class DataLoader {
         }
     }
 
-    public Image[] getImages(){
-        return images;
+    public Tile[] getImages(){
+        return tiles;
     }
 
 }

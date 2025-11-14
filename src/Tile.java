@@ -1,9 +1,11 @@
 import java.awt.image.BufferedImage;
 
 /* Java POJO class */
-public class Image {
+public class Tile {
     public int x;
     public int y;
+    public int width;
+    public int height;
     public String type;
     public String imagePath;
     private transient BufferedImage image;
@@ -14,6 +16,22 @@ public class Image {
 
     public int getY() {
         return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public String getImagePath(){
