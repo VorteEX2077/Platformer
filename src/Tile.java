@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /* Java POJO class */
@@ -49,4 +50,6 @@ public class Tile {
     public void setImage(BufferedImage image) {
         this.image = image;
     }
+
+    public Rectangle getRect(){return new Rectangle(x, y, width, height);}
 }

@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,6 +19,8 @@ public class GamePanel extends JPanel implements KeyListener {
     HashSet<Integer> keyEvent = new HashSet<>();
     ArrayList<Tile> visibleTiles = new ArrayList<>();
     Player player;
+    boolean isLeft;
+    boolean isRight;
 
     /* Constructor */
     GamePanel() {
@@ -51,21 +54,6 @@ public class GamePanel extends JPanel implements KeyListener {
 //        for (Image i : visibleImages) System.out.print(i.getImagePath() + ", ");
 //        System.out.println()
 
-        if (keyEvent.contains(KeyEvent.VK_D)) {
-         //   if (isJumping) player.x += 2;
-            //playerX += 1;
-            /* moving the background */
-            for (Tile currTile : dataLoader.getImages()) {
-                currTile.x -= 2;
-            }
-        }
-        if (keyEvent.contains(KeyEvent.VK_A)) {
-           // if (isJumping) player.x -= 2;
-
-            for (Tile currTile : dataLoader.getImages()) {
-                currTile.x += 2;
-            }
-        }
         if (keyEvent.contains(KeyEvent.VK_W) || keyEvent.contains(KeyEvent.VK_SPACE)) {
             if (onPlatform && !isJumping) {
                 isJumping = true;
@@ -84,7 +72,16 @@ public class GamePanel extends JPanel implements KeyListener {
         }
 
         Tile imgObj = isPlayerOnPlatform();
-        boolean playerCollided = isPlayerCollided();
+        Tile tile = isPlayerCollided();
+        if(tile != null) {
+            if(player.x < tile.x) isRight = true;
+            else if(player.x > tile.x) isLeft = true;
+        } else {
+            isRight = false;
+            isLeft = false;
+        }
+        movePlayer();
+
 
         if (imgObj != null && velocityY >= 0) { // land only when falling or resting
             player.y = imgObj.y - player.height;  // <-- use playerHeight, not image height
@@ -103,9 +100,29 @@ public class GamePanel extends JPanel implements KeyListener {
         }
     }
 
-    private boolean isPlayerCollided() {
+    private void movePlayer() {
+        if (keyEvent.contains(KeyEvent.VK_D) && !isRight) {
+            /* moving the background */
+            for (Tile currTile : dataLoader.getImages()) {
+                currTile.x -= 2;
+            }
+        }
+        if (keyEvent.contains(KeyEvent.VK_A) && !isLeft) {
+            for (Tile currTile : dataLoader.getImages()) {
+                currTile.x += 2;
+            }
+        }
+    }
 
-        return false;
+    private Tile isPlayerCollided() {
+        Area playerArea = new Area(player);
+        for (Tile currTile : dataLoader.getImages()) {
+            Area objectArea = new Area(currTile.getRect());
+            objectArea.intersect(playerArea);
+            //TODO Colission type
+            if(!objectArea.isEmpty()) return currTile;
+        }
+        return null;
     }
 
 

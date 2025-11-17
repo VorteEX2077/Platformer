@@ -39,6 +39,7 @@ public class DataLoader {
     }
 
     public Tile[] getImages(){
+        // TODO: return only the visible images
         return tiles;
     }
 
